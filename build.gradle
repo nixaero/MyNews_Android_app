@@ -1,0 +1,58 @@
+buildscript {
+    ext.kotlin_version = '1.7.21'
+    ext.versionCode = 1
+    ext.versionName = "1.0.0"
+    ext.applicationId = "mob.nereek.io"
+    ext.testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
+    ext.junitVersion = "4.12"
+    ext.multidex_version = "1.0.3"
+    ext.retrofit_version = "2.9.0"
+    ext.debugDbVersion = "1.0.3"
+    ext.retrofitLibVersion = "2.4.0"
+    ext.nav_version = "2.5.3"
+    ext.moshi_version = '1.9.2'
+    ext.converter_moshi_version = '2.4.0'
+    ext.rxkotlin_version = "3.0.0"
+    ext.rxjava_version = '3.0.4'
+    ext.rxandroid_version = '3.0.0'
+
+
+    repositories {
+        google()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.4.1'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.5.3"
+    }
+}
+
+
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        flatDir {
+            dirs 'libs'
+        }
+        maven { url "https://jitpack.io" }
+        maven { url 'https://maven.google.com' }
+        maven { url "https://oss.jfrog.org/libs-snapshot" }
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+
+}
+
+// Define versions in a single place
+ext {
+    minSdkVersion = 21
+    targetSdkVersion = 33
+    compileSdkVersion = 33
+    buildToolsVersion = '33'
+}

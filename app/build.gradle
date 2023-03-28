@@ -1,0 +1,130 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-parcelize'
+apply plugin: 'kotlin-kapt'
+apply plugin: "androidx.navigation.safeargs.kotlin"
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion as Integer
+    buildToolsVersion rootProject.ext.buildToolsVersion as String
+    defaultConfig {
+        applicationId rootProject.ext.applicationId as String
+        minSdkVersion rootProject.ext.minSdkVersion as Integer
+        targetSdkVersion rootProject.ext.targetSdkVersion as Integer
+        versionCode rootProject.ext.versionCode as Integer
+        versionName rootProject.ext.versionName as String
+        testInstrumentationRunner rootProject.ext.testInstrumentationRunner as String
+        vectorDrawables.useSupportLibrary = true
+
+        // Enable multiDex support.
+        multiDexEnabled true
+
+        // BUILD CONFIG BASE_URL ( NEWS API )
+        buildConfigField("String", "BASE_URL", '"https://newsapi.org/v2/"')
+        buildConfigField("String", "APINEWS_KEY", '"d5d3fe8e9870498b9f57818b216507d8"')
+
+        namespace 'mob.nereek.io'
+
+
+        viewBinding {
+            enabled = true
+        }
+    }
+
+    buildTypes {
+
+        release {
+            debuggable false
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        debug {
+            debuggable true
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    signingConfigs {
+
+        releaseConfig {
+            keyAlias 'MyNewsKey'
+            keyPassword 'MyNewsKey'
+            storeFile file('../keystore/MyNewsKey.jks')
+            storePassword 'MyNewsKey'
+        }
+
+        debugConfig {
+            keyAlias 'MyNewsKey'
+            keyPassword 'MyNewsKey'
+            storeFile file('../keystore/MyNewsKey.jks')
+            storePassword 'MyNewsKey'
+        }
+
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    buildFeatures {
+        viewBinding true
+    }
+}
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.1'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
+    implementation 'androidx.test:core-ktx:1.4.0'
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "com.android.support:multidex:$multidex_version"
+
+    //UI
+    implementation 'androidx.appcompat:appcompat:1.6.0'
+    implementation 'com.google.android.material:material:1.8.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+
+    //Image loader
+    implementation("io.coil-kt:coil:0.11.0")
+
+    //Navigation Component
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+
+    //API Service
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.github.akarnokd:rxjava3-retrofit-adapter:3.0.0"
+    implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.6'
+    implementation "com.squareup.retrofit2:converter-moshi:$converter_moshi_version"
+    implementation "com.squareup.moshi:moshi:$moshi_version"
+    implementation "com.squareup.moshi:moshi-kotlin:$moshi_version"
+
+    //SwipeToRefresh
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01")
+
+
+    //Dagger
+    implementation "com.google.dagger:dagger:2.43.2"
+    kapt "com.google.dagger:dagger-compiler:2.43"
+
+    //RX
+    implementation "io.reactivex.rxjava3:rxjava:$rxjava_version"
+    implementation "io.reactivex.rxjava3:rxandroid:$rxandroid_version"
+
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.mockito:mockito-core:4.2.0'
+
+}
